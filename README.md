@@ -6,7 +6,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Made with ❤️](https://img.shields.io/badge/Made%20with-❤️-ff69b4.svg)](#)
 
-A modern, dark-mode Streamlit application that provides interactive groundwater intelligence for Gujarat. Explore real‑time metrics, visualize correlations, and chat with an AI assistant to surface insights and recommendations.
+A modern, Streamlit application that provides interactive groundwater intelligence for Gujarat. Explore real‑time metrics, visualize correlations, and chat with an AI assistant to surface insights and recommendations.
 
 
 ## ✨ Features
