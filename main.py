@@ -215,10 +215,10 @@ with st.sidebar:
     
     # Analysis mode selector
     analysis_mode = st.selectbox("🔬 Analysis Mode", 
-                               ["Standard Analysis", "Deep Learning Insights", "Predictive Modeling", "Anomaly Detection"])
+                               ["Standard Analysis", "Predictive Modeling"])
     
     # Real-time metrics toggle
-    show_realtime = st.toggle("📊 Real-time Metrics", value=True)
+    show_realtime = st.toggle("📊 Metrics", value=True)
 
 # Main dashboard with metrics
 col1, col2, col3, col4 = st.columns(4)
@@ -265,10 +265,10 @@ with col4:
 
 # Interactive visualizations
 if show_realtime and len(numeric_cols) > 0:
-    st.markdown("### 📈 Real-time Data Visualization")
+    st.markdown("### 📈 Data Visualization")
     
     # Create tabs for different visualizations
-    tab1, tab2 = st.tabs(["🌊 Water Quality Trends", "⚡ Live Monitoring"])
+    tab1, tab2 = st.tabs(["🌊 Water Quality Trends", "⚡ Monitoring"])
     
     with tab1:
         # Sample visualization with plotly
@@ -360,12 +360,12 @@ if prompt:
                 sample_data = city_data.head(5).to_string()
                 
                 context_prompt = """
-                You are HydroAI, an advanced groundwater intelligence system analyzing data for {city}. 
+                You are HydroAI, an advanced groundwater intelligence system analyzing data for {city_name} 
                 Current Analysis Mode: {analysis_mode}
                 
-                🌊 CITY DATA ANALYSIS - {city.upper()}:
-                - Total samples: {len(city_data):,}
-                - Data parameters: {', '.join(city_data.columns)}
+                🌊 CITY DATA ANALYSIS - {city_upper}:
+                - Total samples: {sample_count:,}
+                - Data parameters: {params}
                 
                 📊 SAMPLE DATA (Latest 5 readings):
                 {sample_data}
@@ -382,7 +382,16 @@ if prompt:
                 4. Future predictions if applicable
                 
                 Use emojis and formatting for better readability. Keep response engaging and professional.
-                """.format(city=city, analysis_mode=analysis_mode, sample_data=sample_data, city_summary=city_summary, prompt=prompt)
+                """.format(
+                    city_name=city,
+                    city_upper=city.upper(),
+                    analysis_mode=analysis_mode,
+                    sample_count=len(city_data),
+                    params=', '.join(city_data.columns),
+                    sample_data=sample_data,
+                    city_summary=city_summary,
+                    prompt=prompt
+                )
             else:
                 context_prompt = """
                 You are HydroAI, an advanced groundwater intelligence system for Gujarat.
@@ -400,10 +409,18 @@ if prompt:
                 4. Actionable recommendations
                 
                 Use emojis and professional formatting. Be concise but comprehensive.
-                """.format(analysis_mode=analysis_mode, data_summary=data_summary, prompt=prompt)
+                """.format(
+                    analysis_mode=analysis_mode,
+                    data_summary=data_summary,
+                    prompt=prompt
+                )
             
             response = model.generate_content(context_prompt)
             response_text = response.text
+            
+            # Remove unwanted text from the response
+            unwanted_text = "Here's a more detailed analysis of the groundwater data:"
+            response_text = response_text.replace(unwanted_text, "").strip()
             
             # Add some visual flair to the response
             enhanced_response = """
